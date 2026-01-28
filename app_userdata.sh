@@ -1,7 +1,7 @@
 #!/bin/bash
 # Minimal bootstrap - Ansible will configure this server
 yum update -y
-yum install -y python3 curl wget git
+yum install -y nodejs npm git curl wget
 
 # Install Ansible
 pip3 install ansible

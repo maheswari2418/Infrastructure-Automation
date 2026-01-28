@@ -1,0 +1,41 @@
+# Terraform State Files (SENSITIVE - DO NOT COMMIT)
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+
+# Local Terraform Override Files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform CLI files
+.terraform/
+.terraform.lock.hcl
+crash.log
+crash.*.log
+
+# Terraform Variable Override Files (May contain secrets)
+*.tfvars
+*.tfvars.json
+!example.tfvars
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+
+# Logs
+*.log
+
+# Local development files
+local.env
+.env
+

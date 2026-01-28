@@ -1,0 +1,28 @@
+# Apache configuration for load balancing
+<VirtualHost *:{{ web_port }}>
+    ServerName _default_
+    ServerAdmin admin@example.com
+    
+    # Proxy settings for application tier
+    ProxyPreserveHost On
+    ProxyPass / balancer://appcluster/
+    ProxyPassReverse / balancer://appcluster/
+    
+    # Balancer cluster configuration
+    <Proxy balancer://appcluster>
+        {% for app_server in app_servers %}
+        BalancerMember http://{{ app_server }}:{{ app_backend_port }}
+        {% endfor %}
+        ProxySet lbmethod=byrequests
+        ProxySet stickysession=ROUTEID
+    </Proxy>
+    
+    # Logging
+    ErrorLog logs/error_log
+    CustomLog logs/access_log combined
+    
+    # Security headers
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+</VirtualHost>

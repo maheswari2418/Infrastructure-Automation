@@ -1,0 +1,22 @@
+---
+# Web Tier Configuration
+web_packages:
+  - httpd
+  - mod_ssl
+  - curl
+  - wget
+  - git
+
+web_service_name: httpd
+web_port: 80
+ssl_port: 443
+
+# Application backend configuration
+app_backend_port: 8080
+app_servers:
+  - "{{ groups['appservers'][0] }}"
+  - "{{ groups['appservers'][1] }}"
+
+# Monitoring and logging
+enable_logging: true
+log_level: info
