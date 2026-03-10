@@ -1,41 +1,49 @@
-# Terraform State Files (SENSITIVE - DO NOT COMMIT)
+# Terraform directories
+.terraform/
+
+# Terraform state files
 *.tfstate
 *.tfstate.*
-terraform.tfstate
-terraform.tfstate.backup
+crash.log
 
-# Local Terraform Override Files
+# Terraform lock file (optional)
+.terraform.lock.hcl
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Override files
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Terraform CLI files
-.terraform/
-.terraform.lock.hcl
-crash.log
-crash.*.log
-
-# Terraform Variable Override Files (May contain secrets)
-*.tfvars
-*.tfvars.json
-!example.tfvars
-
-# IDE/Editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-
-# OS files
-Thumbs.db
+# CLI configuration files
+.terraformrc
+terraform.rc
 
 # Logs
 *.log
 
-# Local development files
-local.env
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Environment variables
 .env
 
+# AWS credentials
+*.pem
+*.key
