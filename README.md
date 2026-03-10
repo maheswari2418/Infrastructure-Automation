@@ -1,4 +1,7 @@
+
 # Multi-Tier AWS Architecture (IaC) - Terraform + Ansible
+
+<img width="1536" height="1024" alt="ChatGPT Image Jan 27, 2026, 01_31_10 PM" src="https://github.com/user-attachments/assets/fb0b3488-0b73-4883-86ab-f899c2d859fa" />
 
 Production-style, multi-tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end-to-end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 - plus app/web configuration via Ansible.
 
