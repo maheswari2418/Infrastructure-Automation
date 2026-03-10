@@ -1,6 +1,6 @@
-# Multi‑Tier AWS Architecture (IaC) — Terraform + Ansible
+# Multi-Tier AWS Architecture (IaC) - Terraform + Ansible
 
-Production‑style, multi‑tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end‑to‑end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 — plus app/web configuration via Ansible.
+Production-style, multi-tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end-to-end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 - plus app/web configuration via Ansible.
 
 **Why recruiters care**
 - Demonstrates real-world cloud architecture patterns (web/app/db tiers, ALB, private subnets, NAT).
@@ -19,7 +19,7 @@ Production‑style, multi‑tier AWS architecture built with Terraform and optio
 - ALB + target group + listener
 - 2 Web EC2 instances (public subnets)
 - 2 App EC2 instances (private subnets)
-- RDS MySQL (Multi‑AZ) in private DB subnets
+- RDS MySQL (Multi-AZ) in private DB subnets
 - S3 bucket with public access blocked
 
 **Default region**
@@ -28,11 +28,11 @@ Production‑style, multi‑tier AWS architecture built with Terraform and optio
 **Architecture at a glance**
 - Public Web Tier: ALB + EC2 web servers
 - Private App Tier: EC2 app servers
-- Private DB Tier: RDS MySQL (Multi‑AZ)
+- Private DB Tier: RDS MySQL (Multi-AZ)
 - Strict security groups between tiers
 - S3 for object storage (private)
 
-**Architecture diagram (aligned to the reference image)**
+**Architecture diagram**
 ```mermaid
 flowchart TB
   Internet((Internet))
@@ -42,15 +42,14 @@ flowchart TB
     subgraph Public Subnets (AZ1/AZ2)
       Web1[Web EC2 #1]
       Web2[Web EC2 #2]
-      NAT1[NAT Gateway]
-      NAT2[NAT Gateway]
+      NAT[NAT Gateway]
     end
     subgraph Private App Subnets (AZ1/AZ2)
       App1[App EC2 #1]
       App2[App EC2 #2]
     end
     subgraph Private DB Subnets (AZ1/AZ2)
-      RDS[(RDS MySQL Multi‑AZ)]
+      RDS[(RDS MySQL Multi-AZ)]
     end
   end
 
@@ -61,12 +60,11 @@ flowchart TB
   Web2 --> App2
   App1 --> RDS
   App2 --> RDS
-  App1 --> NAT1
-  App2 --> NAT2
+  App1 --> NAT
+  App2 --> NAT
   App1 --> S3
   App2 --> S3
 ```
-Note: The reference image shows dual NAT gateways and autoscaling groups. The current Terraform code uses a single NAT gateway and fixed EC2 instances (no ASGs). Those are listed as suggested improvements below.
 
 **Quick start**
 ```bash
