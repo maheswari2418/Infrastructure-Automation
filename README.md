@@ -1,6 +1,6 @@
-# AWS 3‑Tier Infrastructure Automation (Terraform + Ansible)
+# Multi‑Tier AWS Architecture (IaC) — Terraform + Ansible
 
-Production-style, 3‑tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end‑to‑end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 — plus app/web configuration via Ansible.
+Production‑style, multi‑tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end‑to‑end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 — plus app/web configuration via Ansible.
 
 **Why recruiters care**
 - Demonstrates real-world cloud architecture patterns (web/app/db tiers, ALB, private subnets, NAT).
@@ -15,7 +15,7 @@ Production-style, 3‑tier AWS architecture built with Terraform and optionally 
 
 **What gets provisioned**
 - VPC with public and private subnets across two AZs
-- Internet Gateway + NAT Gateway
+- Internet Gateway + NAT Gateway (single NAT in current implementation)
 - ALB + target group + listener
 - 2 Web EC2 instances (public subnets)
 - 2 App EC2 instances (private subnets)
@@ -30,26 +30,28 @@ Production-style, 3‑tier AWS architecture built with Terraform and optionally 
 - Private App Tier: EC2 app servers
 - Private DB Tier: RDS MySQL (Multi‑AZ)
 - Strict security groups between tiers
+- S3 for object storage (private)
 
-**Architecture diagram**
+**Architecture diagram (aligned to the reference image)**
 ```mermaid
 flowchart TB
   Internet((Internet))
-  ALB[ALB]
+  ALB[Application Load Balancer]
+  S3[(S3 Bucket)]
   subgraph VPC
-    subgraph Public Subnets
+    subgraph Public Subnets (AZ1/AZ2)
       Web1[Web EC2 #1]
       Web2[Web EC2 #2]
-      NAT[NAT Gateway]
+      NAT1[NAT Gateway]
+      NAT2[NAT Gateway]
     end
-    subgraph Private App Subnets
+    subgraph Private App Subnets (AZ1/AZ2)
       App1[App EC2 #1]
       App2[App EC2 #2]
     end
-    subgraph Private DB Subnets
+    subgraph Private DB Subnets (AZ1/AZ2)
       RDS[(RDS MySQL Multi‑AZ)]
     end
-    S3[(S3 Bucket)]
   end
 
   Internet --> ALB
@@ -59,11 +61,12 @@ flowchart TB
   Web2 --> App2
   App1 --> RDS
   App2 --> RDS
+  App1 --> NAT1
+  App2 --> NAT2
   App1 --> S3
   App2 --> S3
-  App1 --> NAT
-  App2 --> NAT
 ```
+Note: The reference image shows dual NAT gateways and autoscaling groups. The current Terraform code uses a single NAT gateway and fixed EC2 instances (no ASGs). Those are listed as suggested improvements below.
 
 **Quick start**
 ```bash
@@ -121,4 +124,6 @@ terraform destroy
 - Add HTTPS with ACM + ALB listener on 443
 - Replace hardcoded AMI ID with data source lookup
 - Add autoscaling groups for web/app tiers
+- Add dual NAT gateways (one per AZ) for higher availability
+- Add VPC endpoint for S3 to avoid public internet routes
 - Enable RDS backups and encryption at rest
