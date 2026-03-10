@@ -35,8 +35,7 @@ Production-style, multi-tier AWS architecture built with Terraform and optionall
 - Strict security groups between tiers
 - S3 for object storage (private)
 
-**Architecture diagram**
-```mermaid
+
 flowchart TB
   Internet((Internet))
   ALB[Application Load Balancer]
