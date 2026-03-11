@@ -50,7 +50,7 @@ resource "aws_subnet" "web_2" {
 
   tags = {
     Name = "${var.environment}-web-subnet-2"
-    Tier = "Web"
+    Tier = "Web1"
   }
 }
 
@@ -511,4 +511,5 @@ resource "aws_s3_bucket_public_access_block" "main" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
 
