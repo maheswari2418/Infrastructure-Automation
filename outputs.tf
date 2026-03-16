@@ -13,7 +13,11 @@ output "alb_dns_name" {
 }
 
 output "web_servers" {
+ main
+  description = "Web server information"
+
   description = "Web server"
+  dev
   value = {
     web_server_1 = {
       id        = aws_instance.web_1.id

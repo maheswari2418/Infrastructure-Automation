@@ -33,8 +33,26 @@ Production-style, multi-tier AWS architecture built with Terraform and optionall
 - Private App Tier: EC2 app servers
 - Private DB Tier: RDS MySQL (Multi-AZ)
 - Strict security groups between tiers
-- S3 for object storage (private)
+- S3 for object storage (pr main
+**Architecture diagram**
+```
+Internet
+  |
+  v
+ALB (public)
+  | \
+  |  \
+  v   v
+Web EC2 #1   Web EC2 #2   (public subnets, AZ1/AZ2)
+  |             |
+  v             v
+App EC2 #1   App EC2 #2   (private app subnets, AZ1/AZ2)
+   \           /
+    \         /
+      RDS MySQL (Multi-AZ, private DB subnets)
 
+App EC2 -> NAT Gateway -> Internet (egress)
+App EC2 -> S3 Bucket (pri
 
 flowchart TB
   Internet((Internet))
@@ -65,7 +83,7 @@ flowchart TB
   App1 --> NAT
   App2 --> NAT
   App1 --> S3
-  App2 --> S3
+  App2 -->dev
 ```
 
 **Quick start**
