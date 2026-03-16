@@ -33,37 +33,24 @@ Production-style, multi-tier AWS architecture built with Terraform and optionall
 - S3 for object storage (private)
 
 **Architecture diagram**
-```mermaid
-flowchart TB
-  Internet((Internet))
-  ALB[Application Load Balancer]
-  S3[(S3 Bucket)]
-  subgraph VPC
-    subgraph Public Subnets (AZ1/AZ2)
-      Web1[Web EC2 #1]
-      Web2[Web EC2 #2]
-      NAT[NAT Gateway]
-    end
-    subgraph Private App Subnets (AZ1/AZ2)
-      App1[App EC2 #1]
-      App2[App EC2 #2]
-    end
-    subgraph Private DB Subnets (AZ1/AZ2)
-      RDS[(RDS MySQL Multi-AZ)]
-    end
-  end
+```
+Internet
+  |
+  v
+ALB (public)
+  | \
+  |  \
+  v   v
+Web EC2 #1   Web EC2 #2   (public subnets, AZ1/AZ2)
+  |             |
+  v             v
+App EC2 #1   App EC2 #2   (private app subnets, AZ1/AZ2)
+   \           /
+    \         /
+      RDS MySQL (Multi-AZ, private DB subnets)
 
-  Internet --> ALB
-  ALB --> Web1
-  ALB --> Web2
-  Web1 --> App1
-  Web2 --> App2
-  App1 --> RDS
-  App2 --> RDS
-  App1 --> NAT
-  App2 --> NAT
-  App1 --> S3
-  App2 --> S3
+App EC2 -> NAT Gateway -> Internet (egress)
+App EC2 -> S3 Bucket (private)
 ```
 
 **Quick start**
