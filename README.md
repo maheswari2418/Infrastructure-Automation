@@ -1,4 +1,7 @@
+
 # Multi-Tier AWS Architecture (IaC) - Terraform + Ansible
+
+<img width="1536" height="1024" alt="ChatGPT Image Jan 27, 2026, 01_31_10 PM" src="https://github.com/user-attachments/assets/fb0b3488-0b73-4883-86ab-f899c2d859fa" />
 
 Production-style, multi-tier AWS architecture built with Terraform and optionally configured with Ansible. This project showcases end-to-end infrastructure automation: VPC networking, security hardening, load balancing, compute tiers, RDS, and S3 - plus app/web configuration via Ansible.
 
@@ -30,8 +33,7 @@ Production-style, multi-tier AWS architecture built with Terraform and optionall
 - Private App Tier: EC2 app servers
 - Private DB Tier: RDS MySQL (Multi-AZ)
 - Strict security groups between tiers
-- S3 for object storage (private)
-
+- S3 for object storage (pr main
 **Architecture diagram**
 ```
 Internet
@@ -50,7 +52,38 @@ App EC2 #1   App EC2 #2   (private app subnets, AZ1/AZ2)
       RDS MySQL (Multi-AZ, private DB subnets)
 
 App EC2 -> NAT Gateway -> Internet (egress)
-App EC2 -> S3 Bucket (private)
+App EC2 -> S3 Bucket (pri
+
+flowchart TB
+  Internet((Internet))
+  ALB[Application Load Balancer]
+  S3[(S3 Bucket)]
+  subgraph VPC
+    subgraph Public Subnets (AZ1/AZ2)
+      Web1[Web EC2 #1]
+      Web2[Web EC2 #2]
+      NAT[NAT Gateway]
+    end
+    subgraph Private App Subnets (AZ1/AZ2)
+      App1[App EC2 #1]
+      App2[App EC2 #2]
+    end
+    subgraph Private DB Subnets (AZ1/AZ2)
+      RDS[(RDS MySQL Multi-AZ)]
+    end
+  end
+
+  Internet --> ALB
+  ALB --> Web1
+  ALB --> Web2
+  Web1 --> App1
+  Web2 --> App2
+  App1 --> RDS
+  App2 --> RDS
+  App1 --> NAT
+  App2 --> NAT
+  App1 --> S3
+  App2 -->dev
 ```
 
 **Quick start**
